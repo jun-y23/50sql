@@ -82,3 +82,53 @@
 -- sum(amount) as dayAmount
 -- from payment
 -- group by p_date;
+
+-- select
+-- sum(amount),
+-- extract(MONTH from payment_date) as month
+-- from payment
+-- group by month
+-- order by month asc
+
+-- select
+--   left(
+--     cast(payment_date as VARCHAR),
+--     7
+--   ) as yyyymm,
+--   sum(amount) as total
+-- from payment
+-- group by yyyymm
+-- order by yyyymm;
+
+
+-- select
+--   sum(amount)
+-- from payment
+-- where payment_date > '2022-01-01' and payment_date < '2022-02-01';
+-- where cast(payment_date as date) between '2022-01-01' and '2022-01-31';
+
+-- 応用
+-- select
+--   max(tbl.total),
+--   min(tbl.total),
+--   avg(tbl.total)
+-- from (
+--   select
+--     customer_id,
+--     sum(amount) as total
+--   from payment
+--   group by customer_id
+-- ) as tbl;
+
+
+-- select
+--   c.last_name
+-- from customer as c
+-- inner join payment_p2022_05 as p5 on c.customer_id = p5.customer_id;
+--
+-- select
+--  c.last_name
+-- from customer as c
+-- where c.customer_id in (
+--   select customer_id from payment_p2022_05
+-- );
