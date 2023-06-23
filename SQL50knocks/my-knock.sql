@@ -132,3 +132,54 @@
 -- where c.customer_id in (
 --   select customer_id from payment_p2022_05
 -- );
+
+
+-- select
+--   distinct(customer_id)
+-- from
+--   payment_p2022_01
+-- intersect
+-- select
+--   distinct(customer_id)
+-- from
+--  payment_p2022_02
+-- intersect
+-- select
+--   distinct(customer_id)
+-- from
+--  payment_p2022_03;
+
+-- select
+--   distinct customer_id
+-- from payment_p2022_05
+-- except
+-- select
+--   distinct customer_id
+-- from payment_p2022_01
+--
+
+-- select distinct customer_id
+-- from payment_p2022_01
+-- union
+-- select distinct customer_id
+-- from payment_p2022_05
+-- order by customer_id asc
+-- limit 3;
+
+-- WITH loyal_customers as (
+--   select
+--     customer_id,
+--     count(*) as cnt
+--   from payment_p2022_01
+--   group by customer_id
+--   having count(*) >= 5
+-- )
+--
+-- select c.* from customer as c
+-- inner join loyal_customers as lc on lc.customer_id = c.customer_id;
+
+-- select count(p1.*) as cnt, rank() over(order by cnt), cl.name from payment_p2022_01 as p1
+-- inner join customer_list as cl on cl.id = p1.customer_id
+-- group by p1.customer_id, cl.name
+-- order by cnt desc;
+-- ;
