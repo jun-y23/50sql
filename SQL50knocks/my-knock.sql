@@ -183,3 +183,71 @@
 -- group by p1.customer_id, cl.name
 -- order by cnt desc;
 -- ;
+
+-- select
+-- cl.name,
+-- count(*) as cnt,
+-- rank() over (
+--   order by count(*) desc
+-- ) as ranking
+-- from payment_p2022_01 as p
+-- inner join customer_list as cl on p.customer_id = cl.id
+-- group by cl.name
+
+
+-- 累積比率=累積利用回数 / 全体の利用回数
+
+-- partition
+-- over
+
+
+-- select
+-- cl.id,
+-- cl.country,
+-- count(*) as cnt,
+-- round(sum(count(*)) over(
+--   partition by cl.country
+-- ),2) sum,
+-- rank() over(
+--   partition by cl.country
+--   order by count(*) desc
+-- )
+-- from payment_p2022_01 as p
+-- inner join customer_list as cl on cl.id = p.customer_id
+-- group by cl.id, cl.country;
+
+-- select
+--   cl.country,
+--   count(*) as count,
+--   rount(
+--   sum(count(*)) over (
+--     order by count(*) desc
+--     rows between
+--       unbounded preceding
+--       and current row
+--   ) / sum(count(*)) oevr (), as cumulative_count,
+-- from payment_p2022_01 as p 
+-- inner join customer_list as cl on cl.id = p.customer_id
+-- group by cl.country
+-- order by count desc;
+
+select
+  cast(payment_date as DATE) as d,
+  count(*),
+  round(AVG(count(*)) over (
+    order by cast(payment_date as DATE) asc
+    rows between
+      2 preceding
+      and current row
+  ), 2) as heikin
+from payment
+where cast(payment_date as DATE) between '2022-04-06' and '2022-04-12'
+group by d
+order by d asc
+
+
+Group by 集約関数は１行にグループ化（集約）して、そのグループに対して、そのグループ内の最大値や平均とかを集約関数を使って出力できる
+行のグループに対して単一の集計値を返す
+
+window関数(分析関数)は入力行のグループに対して分析関数を計算することで行ごとに単一の値を返す
+
